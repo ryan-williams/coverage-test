@@ -195,38 +195,11 @@ object SomaticStandard {
           normalize = true).toMap
       lazy val normalVariantGenotypes = normalLikelihoods.filter(_._1.hasVariantAllele)
 
-      // NOTE(ryan): for now, compare non-reference alleles found in tumor to the sum of all likelihoods of variant
-      // genotypes in the normal sample.
-      // TODO(ryan): in the future, we may want to pay closer attention to the likelihood of the most likely tumor
-      // genotype in the normal sample.
-      lazy val normalVariantsTotalLikelihood = normalVariantGenotypes.values.sum
-      lazy val somaticOdds = mostLikelyTumorGenotypeLikelihood / normalVariantsTotalLikelihood
-
-      if (mostLikelyTumorGenotype.hasVariantAllele
-        && somaticOdds * 100 >= oddsThreshold) {
-        for {
-          // NOTE(ryan): currently only look at the first non-ref allele in the most likely tumor genotype.
-          // removeCorrelatedGenotypes depends on there only being one variant per locus.
-          // TODO(ryan): if we want to handle the possibility of two non-reference alleles at a locus, iterate over all
-          // non-reference alleles here and rework downstream assumptions accordingly.
-          allele <- mostLikelyTumorGenotype.getNonReferenceAlleles.find(_.altBases.nonEmpty).toSeq
-          tumorVariantEvidence = AlleleEvidence(mostLikelyTumorGenotypeLikelihood, allele, filteredTumorPileup)
-          normalReferenceEvidence = AlleleEvidence(1 - normalVariantsTotalLikelihood, Allele(allele.refBases, allele.refBases), filteredNormalPileup)
-        } yield {
-          CalledSomaticAllele(
-            tumorPileup.sampleName,
-            tumorPileup.contigName,
-            tumorPileup.locus,
-            allele,
-            math.log(somaticOdds),
-            tumorVariantEvidence,
-            normalReferenceEvidence
-          )
-        }
+      if (mostLikelyTumorGenotype.hasVariantAllele) {
+        Seq()
       } else {
         Seq()
       }
-
     }
   }
 }
