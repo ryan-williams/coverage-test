@@ -126,6 +126,7 @@
         <artifactId>coveralls-maven-plugin</artifactId>
         <version>4.2.0</version>
         <configuration>
+          <repoToken>7Csw1kB57HMrwCjRp7YaB1TFVka38Pze2</repoToken>
           <sourceDirectories>
             <sourceDirectory>src/main/scala</sourceDirectory>
           </sourceDirectories>
