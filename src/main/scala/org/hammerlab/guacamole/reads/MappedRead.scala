@@ -4,7 +4,6 @@ import htsjdk.samtools.Cigar
 import org.bdgenomics.adam.util.PhredUtils
 import org.hammerlab.guacamole.readsets.{SampleId, SampleName}
 import org.hammerlab.guacamole.reference.{ContigName, Locus, ReferenceRegion}
-import org.hammerlab.guacamole.util.{Bases, CigarUtils}
 
 import scala.collection.JavaConversions
 
@@ -50,26 +49,4 @@ case class MappedRead(
    * base in this read.
    */
   val end: Long = start + cigar.getPaddedReferenceLength
-
-  /**
-   * A read can be "clipped", meaning that some prefix or suffix of it did not align. This is the start of the whole
-   * read's alignment, including any initial clipped bases.
-   */
-  val unclippedStart = cigarElements.takeWhile(CigarUtils.isClipped).foldLeft(start)({
-    (pos, element) => pos - element.getLength
-  })
-
-  /**
-   * The end of the read's alignment, including any final clipped bases, exclusive.
-   */
-  val unclippedEnd = cigarElements.reverse.takeWhile(CigarUtils.isClipped).foldLeft(end)({
-    (pos, element) => pos + element.getLength
-  })
-
-  override def toString: String =
-    "MappedRead(%s:%d, %s, %s)".format(
-      contigName, start,
-      cigar.toString,
-      Bases.basesToString(sequence)
-    )
 }
