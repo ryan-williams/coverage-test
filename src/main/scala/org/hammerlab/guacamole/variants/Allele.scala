@@ -23,24 +23,3 @@ object Allele {
     Allele(Bases.stringToBases(refBases), Bases.stringToBases(altBases))
   }
 }
-
-class AlleleSerializer extends Serializer[Allele] {
-  def write(kryo: Kryo, output: Output, obj: Allele) = {
-    output.writeInt(obj.refBases.length, true)
-    output.writeBytes(obj.refBases.toArray)
-    output.writeInt(obj.altBases.length, true)
-    output.writeBytes(obj.altBases.toArray)
-  }
-
-  def read(kryo: Kryo, input: Input, klass: Class[Allele]): Allele = {
-    val referenceBasesLength = input.readInt(true)
-    val referenceBases: IndexedSeq[Byte] = input.readBytes(referenceBasesLength)
-    val alternateLength = input.readInt(true)
-    val alternateBases: IndexedSeq[Byte] = input.readBytes(alternateLength)
-    Allele(referenceBases, alternateBases)
-  }
-}
-
-trait HasAlleleSerializer {
-  lazy val alleleSerializer: AlleleSerializer = new AlleleSerializer
-}
