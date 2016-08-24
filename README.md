@@ -2,6 +2,8 @@
 Reproduce coveralls-maven-plugin problem:
 
 ```bash
+git clone https://github.com/ryan-williams/coverage-test.git
+cd coverage-test
 mvn clean test jacoco:report coveralls:report
 ```
 
