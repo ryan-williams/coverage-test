@@ -1,7 +1,6 @@
 package org.hammerlab.guacamole.variants
 
 import org.bdgenomics.formats.avro.{Contig, DatabaseVariantAnnotation, Variant}
-import org.hammerlab.guacamole.readsets.SampleName
 import org.hammerlab.guacamole.reference.ReferenceRegion
 import org.hammerlab.guacamole.util.Bases
 
@@ -10,7 +9,7 @@ import org.hammerlab.guacamole.util.Bases
  */
 trait ReferenceVariant extends ReferenceRegion {
 
-  def sampleName: SampleName
+  def sampleName: String
 
   /** reference and sequenced bases for this variant */
   def allele: Allele

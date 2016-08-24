@@ -1,7 +1,6 @@
 package org.hammerlab.guacamole.variants
 
 import org.bdgenomics.adam.util.PhredUtils
-import org.hammerlab.guacamole.readsets.SampleName
 import org.hammerlab.guacamole.reference.{ContigName, Locus, NumLoci}
 
 /**
@@ -16,7 +15,7 @@ import org.hammerlab.guacamole.reference.{ContigName, Locus, NumLoci}
  * @param rsID   identifier for the variant if it is in dbSNP
  * @param length length of the variant
  */
-case class CalledSomaticAllele(sampleName: SampleName,
+case class CalledSomaticAllele(sampleName: String,
                                contigName: ContigName,
                                start: Locus,
                                allele: Allele,
