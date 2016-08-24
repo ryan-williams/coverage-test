@@ -13,8 +13,6 @@ import org.hammerlab.guacamole.reference.{ContigName, Locus, NumLoci}
  * @param start start position of the variant (0-based)
  * @param allele reference and sequence bases of this variant
  * @param somaticLogOdds log odds-ratio of the variant in the tumor compared to the normal sample
- * @param tumorVariantEvidence supporting statistics for the variant in the tumor sample
- * @param normalReferenceEvidence supporting statistics for the reference in the normal sample
  * @param rsID   identifier for the variant if it is in dbSNP
  * @param length length of the variant
  */
@@ -23,13 +21,11 @@ case class CalledSomaticAllele(sampleName: SampleName,
                                start: Locus,
                                allele: Allele,
                                somaticLogOdds: Double,
-                               tumorVariantEvidence: AlleleEvidence,
-                               normalReferenceEvidence: AlleleEvidence,
                                rsID: Option[Int] = None,
                                override val length: NumLoci = 1) extends ReferenceVariant {
   val end: Locus = start + 1L
 
   // P ( variant in tumor AND no variant in normal) = P(variant in tumor) * P(reference in normal)
   lazy val phredScaledSomaticLikelihood =
-    PhredUtils.successProbabilityToPhred(tumorVariantEvidence.likelihood * normalReferenceEvidence.likelihood - 1e-10)
+    PhredUtils.successProbabilityToPhred(somaticLogOdds)
 }
