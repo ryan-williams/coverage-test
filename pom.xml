@@ -16,6 +16,7 @@
 
   <properties>
     <scala.version>2.10.5</scala.version>
+    <scala.version.prefix>2.10</scala.version.prefix>
   </properties>
 
   <build>
@@ -47,13 +48,6 @@
               <goal>testCompile</goal>
             </goals>
           </execution>
-          <execution>
-            <id>attach-scaladocs</id>
-            <phase>verify</phase>
-            <goals>
-              <goal>doc-jar</goal>
-            </goals>
-          </execution>
         </executions>
         <configuration>
           <scalaVersion>${scala.version}</scalaVersion>
@@ -64,11 +58,6 @@
             <arg>-optimise</arg>
             <arg>-deprecation</arg>
           </args>
-          <jvmArgs>
-            <jvmArg>-Xms64m</jvmArg>
-            <jvmArg>-Xms1024m</jvmArg>
-            <jvmArg>-Xmx1024m</jvmArg>
-          </jvmArgs>
         </configuration>
       </plugin>
       <!-- disable surefire -->
@@ -126,6 +115,7 @@
         <artifactId>coveralls-maven-plugin</artifactId>
         <version>4.2.0</version>
         <configuration>
+          <repoToken>7Csw1kB57HMrwCjRp7YaB1TFVka38Pze2</repoToken>
           <sourceDirectories>
             <sourceDirectory>src/main/scala</sourceDirectory>
           </sourceDirectories>
@@ -137,7 +127,7 @@
   <dependencies>
     <dependency>
       <groupId>org.scalatest</groupId>
-      <artifactId>scalatest_2.10</artifactId>
+      <artifactId>scalatest_${scala.version.prefix}</artifactId>
       <version>2.2.1</version>
       <scope>test</scope>
     </dependency>
