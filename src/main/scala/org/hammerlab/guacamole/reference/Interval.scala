@@ -1,9 +1,5 @@
 package org.hammerlab.guacamole.reference
 
-import java.lang.{Long => JLong}
-
-import com.google.common.collect.{Range => JRange}
-
 trait Interval extends Ordered[Interval] {
   /** Start position on the genome, inclusive. Must be non-negative. */
   def start: Locus
@@ -19,18 +15,6 @@ trait Interval extends Ordered[Interval] {
     if (diff < 0) -1
     else if (diff == 0) 0
     else 1
-  }
-}
-
-object Interval {
-  def apply(start: Locus, end: Locus): Interval = IntervalImpl(start, end)
-
-  def apply(t: (Locus, Locus)): Interval = Interval(t._1, t._2)
-
-  def unapply(i: Interval): Option[(Locus, Locus)] = Some((i.start, i.end))
-
-  def orderByEndDesc[I <: Interval] = new Ordering[I] {
-    override def compare(x: I, y: I): Int = y.end.compare(x.end)
   }
 }
 
